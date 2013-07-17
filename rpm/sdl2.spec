@@ -15,6 +15,7 @@ BuildRequires: pkgconfig(egl)
 BuildRequires: pkgconfig(glesv1_cm)
 BuildRequires: pkgconfig(glesv2)
 BuildRequires: pkgconfig(xkbcommon)
+BuildRequires: pkgconfig(libpulse-simple)
 
 
 %description
@@ -40,7 +41,7 @@ to develop SDL applications.
 %setup -q 
 
 %build
-%configure --disable-video-x11 --enable-video-wayland
+%configure --disable-video-x11 --enable-video-wayland --enable-pulseaudio
 make
 
 %install
