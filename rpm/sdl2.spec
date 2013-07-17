@@ -6,8 +6,6 @@ Source: http://www.libsdl.org/release/%{name}-%{version}.tar.gz
 URL: http://www.libsdl.org/
 License: zlib
 Group: System/GUI/Other
-BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-Prefix: %{_prefix}
 BuildRequires: pkgconfig(wayland-egl)
 BuildRequires: pkgconfig(wayland-client)
 BuildRequires: pkgconfig(wayland-cursor)
