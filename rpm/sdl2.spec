@@ -1,7 +1,7 @@
 Summary: Simple DirectMedia Layer 2
 Name: SDL2
 Version: 2.0.0
-Release: 2
+Release: 3
 Source: http://www.libsdl.org/release/%{name}-%{version}.tar.gz
 URL: http://www.libsdl.org/
 License: zlib
