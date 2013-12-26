@@ -818,6 +818,7 @@ enable_sndio_shared
 enable_diskaudio
 enable_dummyaudio
 enable_video_wayland
+enable_video_wayland_qt_touch
 enable_video_x11
 with_x
 enable_x11_shared
@@ -1534,6 +1535,9 @@ Optional Features:
   --enable-diskaudio      support the disk writer audio driver [[default=yes]]
   --enable-dummyaudio     support the dummy audio driver [[default=yes]]
   --enable-video-wayland  use Wayland video driver [[default=yes]]
+  --enable-video-wayland-qt-touch
+                          QtWayland server support for Wayland video driver
+                          [[default=yes]]
   --enable-video-x11      use X11 video driver [[default=yes]]
   --enable-x11-shared     dynamically load X11 support [[default=maybe]]
   --enable-video-x11-xcursor
@@ -18645,6 +18649,14 @@ else
 fi
 
 
+    # Check whether --enable-video-wayland-qt-touch was given.
+if test "${enable_video_wayland_qt_touch+set}" = set; then :
+  enableval=$enable_video_wayland_qt_touch;
+else
+  enable_video_wayland_qt_touch=yes
+fi
+
+
     if test x$enable_video = xyes -a x$enable_video_wayland = xyes; then
         # Extract the first word of "pkg-config", so it can be a program name with args.
 set dummy pkg-config; ac_word=$2
@@ -18704,6 +18716,11 @@ $as_echo "$video_wayland" >&6; }
 
 $as_echo "#define SDL_VIDEO_DRIVER_WAYLAND 1" >>confdefs.h
 
+            if test x$enable_video_wayland_qt_touch = xyes; then
+
+$as_echo "#define SDL_VIDEO_DRIVER_WAYLAND_QT_TOUCH 1" >>confdefs.h
+
+            fi
             SOURCES="$SOURCES $srcdir/src/video/wayland/*.c"
             EXTRA_CFLAGS="$EXTRA_CFLAGS $WAYLAND_CFLAGS"
                         EXTRA_LDFLAGS="$EXTRA_LDFLAGS $WAYLAND_LIBS"
@@ -19420,11 +19437,6 @@ fi
 fi
 
         if test x$have_x = xyes; then
-            # Only allow dynamically loaded X11 if the X11 function pointers
-            # will not end up in the global namespace, which causes problems
-            # with other libraries calling X11 functions.
-            x11_symbols_private=$have_gcc_fvisibility
-
             # Check whether --enable-x11-shared was given.
 if test "${enable_x11_shared+set}" = set; then :
   enableval=$enable_x11_shared;
@@ -19435,7 +19447,6 @@ fi
 
             case "$host" in
                 *-*-darwin*)
-                    x11_symbols_private=yes
                     x11_lib='/usr/X11R6/lib/libX11.6.dylib'
                     x11ext_lib='/usr/X11R6/lib/libXext.6.dylib'
                     xcursor_lib='/usr/X11R6/lib/libXcursor.1.dylib'
@@ -19503,7 +19514,7 @@ $as_echo "#define SDL_VIDEO_DRIVER_X11 1" >>confdefs.h
             SDL_CFLAGS="$SDL_CFLAGS $X_CFLAGS"
 
             if test x$enable_x11_shared = xmaybe; then
-                enable_x11_shared=$x11_symbols_private
+                enable_x11_shared=yes
             fi
             if test x$have_loadso != xyes && \
                test x$enable_x11_shared = xyes; then
@@ -19511,13 +19522,6 @@ $as_echo "#define SDL_VIDEO_DRIVER_X11 1" >>confdefs.h
 $as_echo "$as_me: WARNING: You must have SDL_LoadObject() support for dynamic X11 loading" >&2;}
                 enable_x11_shared=no
             fi
-            if test x$x11_symbols_private != xyes && \
-               test x$enable_x11_shared = xyes; then
-                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: You must have gcc4 (-fvisibility=hidden) for dynamic X11 loading" >&5
-$as_echo "$as_me: WARNING: You must have gcc4 (-fvisibility=hidden) for dynamic X11 loading" >&2;}
-                enable_x11_shared=no
-            fi
-
             if test x$have_loadso = xyes && \
                test x$enable_x11_shared = xyes && test x$x11_lib != x && test x$x11ext_lib != x; then
                 echo "-- dynamic libX11 -> $x11_lib"
