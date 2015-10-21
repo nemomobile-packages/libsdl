@@ -1,7 +1,0 @@
-* Fri Apr 18 2014 Thomas Perl <thomas.perl@jolla.com> - 2.0.3-nemo1
-- [nemo] New upstream release 2.0.3
-- [nemo] SDL 2.0.3 RPM packaging
-- [nemo] Wayland: Resize windows with 0x0 requested size to screen size
-
-* Mon Dec 30 2013 Thomas Perl <thomas.perl@jolla.com> - 2.0.1-nemo2
-- [nemo] Add RPM packaging
